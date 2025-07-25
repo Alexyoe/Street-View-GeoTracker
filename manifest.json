@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "StreetView GeoJSON Recorder",
+    "version": "1.3",
+    "description": "Track every StreetView coord and download as GeoJSON",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.google.com/maps*",
+                "*://maps.google.com/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "host_permissions": [
+        "*://*.google.com/maps*",
+        "*://maps.google.com/*"
+    ]
+}
