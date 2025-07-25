@@ -60,33 +60,52 @@ chrome.runtime.onMessage.addListener((msg, _, sendResponse) => {
     recording = false;
     console.log("[SV‑Rec] STOP — total points", coords.length);
 
-    // Build LineString GeoJSON
+    // 1) Build a combined features array
+    const features = [];
+
+    // 1a) The LineString feature (the path)
+    features.push({
+      type: "Feature",
+      properties: { featureType: "path", count: coords.length },
+      geometry: {
+        type: "LineString",
+        coordinates: coords.map((c) => [c.lng, c.lat]),
+      },
+    });
+
+    // 1b) Individual Point features
+    coords.forEach((c, i) => {
+      features.push({
+        type: "Feature",
+        properties: { featureType: "point", index: i + 1 },
+        geometry: {
+          type: "Point",
+          coordinates: [c.lng, c.lat],
+        },
+      });
+    });
+
+    // 2) Wrap into a FeatureCollection
     const geojson = {
       type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          properties: { count: coords.length },
-          geometry: {
-            type: "LineString",
-            coordinates: coords.map((c) => [c.lng, c.lat]),
-          },
-        },
-      ],
+      features,
     };
 
-    // auto‑generate filename
+    // 3) Auto‑generate filename
     const now = new Date();
     const pad = (n) => n.toString().padStart(2, "0");
-    const y = now.getFullYear();
-    const M = pad(now.getMonth() + 1);
-    const d = pad(now.getDate());
-    const h = pad(now.getHours());
-    const m = pad(now.getMinutes());
-    const s = pad(now.getSeconds());
-    const filename = `google-street-path-${y}${M}${d}-${h}${m}${s}.geojson`;
+    const ts = [
+      now.getFullYear(),
+      pad(now.getMonth() + 1),
+      pad(now.getDate()),
+      "-",
+      pad(now.getHours()),
+      pad(now.getMinutes()),
+      pad(now.getSeconds()),
+    ].join("");
+    const filename = `google-street-path-${ts}.geojson`;
 
-    // download via blob URL
+    // 4) Trigger download via Blob
     const blob = new Blob([JSON.stringify(geojson, null, 2)], {
       type: "application/vnd.geo+json",
     });
