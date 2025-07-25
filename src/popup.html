@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
+  <title>StreetView Tracker</title>
   <style>
     body {
-      font: 13px sans-serif;
-      padding: 10px;
-      width: 200px
+      background: #121212;
+      color: #ddd;
+      font-family: sans-serif;
+      padding: 16px;
+      width: 220px;
     }
 
-    input,
     button {
       width: 100%;
-      margin: 6px 0;
+      padding: 10px;
+      margin: 8px 0;
+      background: #1f1f1f;
+      color: #eee;
+      border: 1px solid #333;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    button:hover:not(:disabled) {
+      background: #2a2a2a;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
-  <input id="filename" placeholder="my‑streetview.geojson" />
   <button id="start">Start Recording</button>
-  <button id="stop" disabled>Stop & Save</button>
+  <button id="stop" disabled>Stop &amp; Save</button>
 </body>
 
 </html>
