@@ -3,6 +3,11 @@
     "name": "StreetView Tracker",
     "version": "1.3",
     "description": "Track every StreetView coord and download as a GeoJSON path!",
+    "icons": {
+        "16": "assets/16.png",
+        "48": "assets/48.png",
+        "128": "assets/128.png"
+    },
     "action": {
         "default_popup": "popup.html"
     },
