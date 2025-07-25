@@ -50,9 +50,12 @@ A lightweight Chrome extension that records your Google Maps Street View tra
 ```
 street-view-tracker/
 ├─ assets/
-│  ├─ icon16.png
-│  ├─ icon48.png
-│  └─ icon128.png
+│  ├─ 16.png
+│  ├─ 48.png
+│  ├─ 128.png
+│  ├─ 16-active.png
+│  ├─ 48-active.png
+│  └─ 128-active.png
 ├─ src/
 │  ├─ content.js       # In-page recording + download logic
 │  ├─ popup.html       # Dark-mode popup template
