@@ -10,19 +10,48 @@
       color: #ddd;
       font-family: sans-serif;
       padding: 16px;
-      width: 220px;
+      width: 240px;
+      box-sizing: border-box;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .header img.icon {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      color: #fff;
+      margin: 0;
+      flex: 1;
+    }
+
+    hr {
+      border: none;
+      height: 3px;
+      background: #333;
+      margin: 12px 0;
     }
 
     button {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
+      margin: 6px 0;
       background: #1f1f1f;
       color: #eee;
       border: 1px solid #333;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
+      transition: background 0.2s;
+      font-weight: bold;
     }
 
     button:disabled {
@@ -34,16 +63,52 @@
       background: #2a2a2a;
     }
 
-    p {
+    .warning p {
       text-align: center;
       font-size: 14px;
+    }
+
+    footer {
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 10px;
+      color: #888;
+      margin: 4px 0 0;
+      font-style: italic;
+    }
+
+    .footer-text a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      color: #970000;
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
-  <button id="start">Start Recording</button>
-  <button id="stop" disabled>Stop &amp; Save</button>
+  <div class="header">
+    <img src="assets/48.png" alt="Tracker Icon" class="icon">
+    <h1>StreetView Tracker</h1>
+  </div>
+  <hr>
+  <div id="controls" class="control-group">
+    <button id="start">Start Tracking</button>
+    <button id="stop" disabled>Stop &amp; Save</button>
+  </div>
+
+  <footer>
+    <p class="footer-text">
+      Made by <a href="https://github.com/alexyoe" target="_blank">Alexyoe</a>
+    </p>
+  </footer>
+  <!-- HtmlWebpackPlugin will inject popup.js here -->
 </body>
 
 </html>

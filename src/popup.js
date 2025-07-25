@@ -2,6 +2,7 @@
 
 const startBtn = document.getElementById("start");
 const stopBtn = document.getElementById("stop");
+const controlDiv = document.getElementById("controls");
 
 function withActiveTab(fn) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -20,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch {}
 
     if (!isMaps) {
-      document.body.innerHTML = `<p>⚠️ Please open a Google Maps Street View page first.</p>`;
+      controlDiv.innerHTML = `<div class="warning"><p>⚠️ Please open a Google Maps Street View page first.</p></div>`;
       return;
     }
 
