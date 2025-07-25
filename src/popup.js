@@ -1,5 +1,4 @@
 // popup.js
-
 const startBtn = document.getElementById("start");
 const stopBtn = document.getElementById("stop");
 const controlDiv = document.getElementById("controls");
@@ -11,7 +10,23 @@ function withActiveTab(fn) {
   });
 }
 
-// Centralize enabling/disabling + label updates
+// Swap toolbar icon
+function setExtensionIcon(recording) {
+  const path = recording
+    ? {
+        16: "assets/16-active.png",
+        48: "assets/48-active.png",
+        128: "assets/128-active.png",
+      }
+    : {
+        16: "assets/16.png",
+        48: "assets/48.png",
+        128: "assets/128.png",
+      };
+  chrome.action.setIcon({ path });
+}
+
+// Enable/disable + label + icon in one place
 function updateButtons(recording) {
   if (recording) {
     startBtn.textContent = "Recording…";
@@ -22,12 +37,12 @@ function updateButtons(recording) {
     startBtn.disabled = false;
     stopBtn.disabled = true;
   }
+  setExtensionIcon(recording);
 }
 
-// On popup open, check if we're on Street View & restore state
+// On popup open, guard URLs & restore state+UI
 window.addEventListener("DOMContentLoaded", () => {
   withActiveTab((tab) => {
-    // Only show controls on a Maps URL
     let isMaps = false;
     try {
       const u = new URL(tab.url);
@@ -44,7 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Restore recording state
+    // ask content.js if we’re already recording
     chrome.tabs.sendMessage(tab.id, { type: "getState" }, (res) => {
       if (res && typeof res.recording === "boolean") {
         updateButtons(res.recording);
@@ -53,7 +68,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Start click → tell content.js and flip UI
+// Single Start handler
 startBtn.addEventListener("click", () => {
   withActiveTab((tab) => {
     chrome.tabs.sendMessage(tab.id, { type: "start" }, () => {
@@ -62,7 +77,7 @@ startBtn.addEventListener("click", () => {
   });
 });
 
-// Stop click → tell content.js and flip UI
+// Single Stop handler
 stopBtn.addEventListener("click", () => {
   withActiveTab((tab) => {
     chrome.tabs.sendMessage(tab.id, { type: "stop" }, () => {
