@@ -1,6 +1,6 @@
-// content.js — robust URL‑change detection & recording
+// content.js — robust URL-change detection & recording, GeoJSON LineString export
 
-console.log("[SV‑Rec] content script loaded on", location.href);
+console.log("[SV-Rec] content script loaded on", location.href);
 
 let recording = false;
 let coords = [];
@@ -13,11 +13,10 @@ function extractCoords(url) {
   return m ? { lat: parseFloat(m[1]), lng: parseFloat(m[2]) } : null;
 }
 
-// 2) Called whenever the URL might have changed
+// 2) Record a new coord if URL has changed and recording is active
 function recordCurrentCoord() {
   const coord = extractCoords(location.href);
   if (!coord) return;
-  // only record if it's different from last
   if (
     !lastCoord ||
     coord.lat !== lastCoord.lat ||
@@ -26,27 +25,25 @@ function recordCurrentCoord() {
     lastCoord = coord;
     if (recording) {
       coords.push(coord);
-      console.debug("[SV‑Rec] recorded", coord);
+      console.debug("[SV-Rec] recorded", coord);
     }
   }
 }
 
-// 3) Monkey‑patch History API methods
+// 3) Monkey-patch History API to catch SPA navigations
 ["pushState", "replaceState"].forEach((fn) => {
   const orig = history[fn];
   history[fn] = function () {
     const ret = orig.apply(this, arguments);
-    // let the URL actually update first
+    // schedule after URL actually changes
     setTimeout(recordCurrentCoord, 0);
     return ret;
   };
 });
-
-// 4) Listen to popstate & hashchange
 window.addEventListener("popstate", recordCurrentCoord);
 window.addEventListener("hashchange", recordCurrentCoord);
 
-// 5) Fallback polling every 1 second
+// 4) Fallback polling every second in case of other changes
 setInterval(() => {
   if (location.href !== lastHref) {
     lastHref = location.href;
@@ -54,41 +51,44 @@ setInterval(() => {
   }
 }, 1000);
 
-// 6) Grab an initial coord if you're already in SV
+// 5) Initial check on script load
 recordCurrentCoord();
 
-// 7) Handle messages from popup.js
+// 6) Handle messages from popup.js
 chrome.runtime.onMessage.addListener((msg, _, sendResponse) => {
   if (msg.type === "start") {
     recording = true;
     coords = [];
-    // immediately record the current pano
+    // immediately record the current location
     recordCurrentCoord();
-    console.log("[SV‑Rec] START — first point", lastCoord);
+    console.log("[SV-Rec] START — first point", lastCoord);
     sendResponse({ status: "started" });
   } else if (msg.type === "stop") {
     recording = false;
-    console.log("[SV‑Rec] STOP — total points", coords.length);
+    console.log("[SV-Rec] STOP — total points", coords.length);
 
-    // build GeoJSON
+    // Build a single LineString feature
     const geojson = {
       type: "FeatureCollection",
-      features: coords.map((c, i) => ({
-        type: "Feature",
-        properties: { index: i + 1 },
-        geometry: { type: "Point", coordinates: [c.lng, c.lat] },
-      })),
+      features: [
+        {
+          type: "Feature",
+          properties: { count: coords.length },
+          geometry: {
+            type: "LineString",
+            coordinates: coords.map((c) => [c.lng, c.lat]),
+          },
+        },
+      ],
     };
 
-    // data URI + single download trigger
-    const blob = new Blob([JSON.stringify(geojson, null, 2)], {
-      type: "application/vnd.geo+json",
-    });
+    // Create a Blob and download it
+    const dataStr = JSON.stringify(geojson, null, 2);
+    const blob = new Blob([dataStr], { type: "application/vnd.geo+json" });
     const url = URL.createObjectURL(blob);
     const filename =
-      (msg.filename || "coords").replace(/\.geojson$/i, "") + ".geojson";
+      (msg.filename || "path").replace(/\.geojson$/i, "") + ".geojson";
 
-    // create an <a> so Chrome will download it
     const a = document.createElement("a");
     a.href = url;
     a.download = filename;
