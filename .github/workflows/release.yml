@@ -27,11 +27,11 @@ jobs:
           cd dist
           zip -r ../extension.zip .
 
-      # - name: Create GitHub Release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     tag_name: manual-release-${{ github.run_number }}
-      #     name: Manual Release ${{ github.run_number }}
-      #     files: extension.zip
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: manual-release-${{ github.run_number }}
+          name: Manual Release ${{ github.run_number }}
+          files: extension.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
