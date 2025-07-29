@@ -1,4 +1,4 @@
-# Street View Tracker
+# Street View GeoTracker
 
 A lightweight Chrome extension that records your Google Maps Street View trajectory as a GeoJSON file and lets you download it with one click. No background service workers, no extra permissions, just pop open the popup, hit **Start Recording**, roam around Street View, then **Stop & Save** to get a timestamped `google-street-path-YYYYMMDD-HHMMSS.geojson` file.
 
@@ -39,7 +39,7 @@ A lightweight Chrome extension that records your Google Maps Street View tra
 
 5. **Enjoy**  
    - Navigate to any Google Maps Street View panorama  
-   - Click the **Street View Tracker** toolbar icon  
+   - Click the **Street View GeoTracker** toolbar icon  
    - Hit **Start Recording**, explore, then **Stop & Save**  
    - Your `.geojson` will download automatically!
 

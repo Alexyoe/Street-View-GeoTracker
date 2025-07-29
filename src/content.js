@@ -1,5 +1,5 @@
 // content.js — robust URL‑change detection & recording, GeoJSON LineString export
-console.log("[SV‑Rec] content script loaded on", location.href);
+console.log("[SVGT] content script loaded on", location.href);
 
 let recording = false;
 let coords = [];
@@ -22,7 +22,7 @@ function recordCurrentCoord() {
     lastCoord = coord;
     if (recording) {
       coords.push(coord);
-      console.debug("[SV‑Rec] recorded", coord);
+      console.debug("[SVGT] recorded", coord);
     }
   }
 }
@@ -54,11 +54,11 @@ chrome.runtime.onMessage.addListener((msg, _, sendResponse) => {
     recording = true;
     coords = [];
     recordCurrentCoord();
-    console.log("[SV‑Rec] START — first point", lastCoord);
+    console.log("[SVGT] START — first point", lastCoord);
     sendResponse({ status: "started" });
   } else if (msg.type === "stop") {
     recording = false;
-    console.log("[SV‑Rec] STOP — total points", coords.length);
+    console.log("[SVGT] STOP — total points", coords.length);
 
     // 1) Build a combined features array
     const features = [];
