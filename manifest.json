@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "StreetView Tracker",
+    "name": "StreetView GeoTracker",
     "version": "1.3",
-    "description": "Track every StreetView coord and download as a GeoJSON file!",
+    "description": "Track every Street View coordinate and download as a GeoJSON file!",
     "icons": {
         "16": "assets/16.png",
         "48": "assets/48.png",
