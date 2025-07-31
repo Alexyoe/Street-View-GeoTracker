@@ -15,10 +15,25 @@ A lightweight Chrome extension that records your Google Maps Street View tra
 
 ## 📦 Installation
 
+### 📥 Quick Install from Release
+
+You can skip building from source by downloading the pre-built extension:
+
+1. Go to the [**Releases page**](https://github.com/alexyoe/street-view-geotracker/releases)  
+2. Download the latest `StreetViewGeoTracker.zip`  
+3. Unzip it to any folder on your system  
+4. Open `chrome://extensions` in Chrome  
+5. Enable **Developer mode** (toggle in the top right)  
+6. Click **Load unpacked** and select the **unzipped folder**
+
+You’ll now see the **Street View GeoTracker** icon in your toolbar. You’re ready to start recording Street View paths!
+
+### 👷 Build and Install
+
 1. **Clone the repo**  
    ```bash
-   git clone https://github.com/alexyoe/street-view-tracker.git
-   cd street-view-tracker
+   git clone https://github.com/alexyoe/street-view-geotracker.git
+   cd street-view-geotracker
    ```
 
 2. **Install dependencies**  
@@ -48,7 +63,7 @@ A lightweight Chrome extension that records your Google Maps Street View tra
 ## 🗂 Directory Structure
 
 ```
-street-view-tracker/
+street-view-geotracker/
 ├─ assets/
 │  ├─ 16.png
 │  ├─ 48.png
