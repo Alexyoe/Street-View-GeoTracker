@@ -60,29 +60,6 @@ You’ll now see the **Street View GeoTracker** icon in your toolbar. You’re r
 
 ---
 
-## 🗂 Directory Structure
-
-```
-street-view-geotracker/
-├─ assets/
-│  ├─ 16.png
-│  ├─ 48.png
-│  ├─ 128.png
-│  ├─ 16-active.png
-│  ├─ 48-active.png
-│  └─ 128-active.png
-├─ src/
-│  ├─ content.js       # In-page recording + download logic
-│  ├─ popup.html       # Dark-mode popup template
-│  └─ popup.js         # Popup ↔ content-script messaging
-├─ manifest.json       # MV3 manifest (no background workers)
-├─ webpack.config.js   # Bundles src → dist using Webpack + HTMLPlugin
-├─ package.json        # NPM scripts & dependencies
-└─ README.md           # ← you are here!
-```
-
----
-
 ## 🤝 Contributing
 
 1. Fork the repo
