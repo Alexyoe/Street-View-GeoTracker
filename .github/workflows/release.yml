@@ -1,0 +1,41 @@
+name: Build and Release Extension
+
+on:
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+permissions:
+  contents: write # Required for creating releases
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout source code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm" # Speeds up installs with caching
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🛠️ Build project
+        run: npm run build # Ensure this builds to `dist/`
+
+      - name: 📁 Create ZIP of dist
+        run: |
+          cd dist
+          zip -r ../StreetViewGeoTracker.zip .
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: test-release-${{ github.run_number }}
+          name: Test Release ${{ github.run_number }}
+          files: StreetViewGeoTracker.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
